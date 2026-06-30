@@ -86,7 +86,7 @@ sddm-greeter-qt6 --test-mode --theme /usr/share/sddm/themes/fnaf3-sddm
 
 ## Background Video
 
-The theme expects a video file at `assets/menu-theme.webm`. Add your own:
+The theme expects a video file at `assets/menu-theme.webm`.  There is already a video (the background in the gif you see above in the readme) .You can add your own (optional):
 
 ```bash
 cp ~/Downloads/your-video.webm fnaf3-sddm/assets/menu-theme.webm
