@@ -5,7 +5,6 @@
 
 ## Preview
 ![FNAF3-SDDM Preview](assets/preview.gif)
-*Boot sequence: fade to black → "NIGHT" scales in → night number flickers → "SECURITY SHIFT INITIATED" → white static burst → login screen.*
 
 ---
 
