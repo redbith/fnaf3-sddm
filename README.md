@@ -4,10 +4,7 @@
 ---
 
 ## Preview
-
-<video width="100%" controls autoplay loop>
-  <source src="https://raw.githubusercontent.com/redbith/fnaf3-sddm/main/assets/preview.mp4" type="video/mp4">
-</video>
+![FNAF3-SDDM Preview](assets/preview.gif)
 *Boot sequence: fade to black → "NIGHT" scales in → night number flickers → "SECURITY SHIFT INITIATED" → white static burst → login screen.*
 
 ---
