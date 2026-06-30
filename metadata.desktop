@@ -1,0 +1,16 @@
+[SddmGreeterTheme]
+Name=Night Shift
+Description=Security-office / night-start themed login screen, inspired by horror survival games
+Author=Custom Theme
+Copyright=Original artwork, no third-party assets included
+License=MIT
+Type=sddm-theme
+Version=1.0
+Website=
+Screenshot=screenshot.png
+MainScript=Main.qml
+ConfigFile=theme.conf
+TranslationsDirectory=translations
+Theme-Id=night-shift
+Theme-API=2.0
+QtVersion=6
