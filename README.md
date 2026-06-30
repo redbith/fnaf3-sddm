@@ -1,146 +1,203 @@
-# Night Shift — Gece Vardiyası Temalı SDDM Giriş Teması
+# FNAF3-SDDM
 
-Korku hayatta kalma oyunlarındaki "gece başlama ekranı" estetiğinden ilham
-alan, güvenlik kamerası / CRT statik görünümlü bir SDDM (Qt6) giriş teması.
+> An SDDM (Qt6) login theme inspired by the **Five Nights at Freddy's 3** main menu aesthetic. 
+---
 
-> Not: Bu tema gerçek oyun görselleri, logoları veya marka varlıkları
-> içermez — telif hakkı nedeniyle bunları birebir kopyalayamam. Bunun yerine
-> aynı atmosferi (statik parazit, taranma çizgileri, "NIGHT X" açılış
-> animasyonu, kamera çerçevesi, mor/siyah palet) orijinal kodla yeniden
-> yarattım. Açılışta `theme.conf` içinden gece numarasını, klasik logoya en
-> yakın görünüm için de `fonts/` klasörüne istediğiniz bir piksel fontu
-> ekleyerek dilediğiniz gibi özelleştirebilirsiniz (şu an açık kaynaklı
-> "Press Start 2P" fontu hazır geliyor).
+## Preview
 
-## İçerik
+[![FNAF3-SDDM Preview](https://via.placeholder.com/800x450/0a0a0a/8b5cf6?text=Preview+GIF+Placeholder)](https://your-preview-link-here)
+
+*Boot sequence: fade to black → "NIGHT" scales in → night number flickers → "SECURITY SHIFT INITIATED" → white static burst → login screen.*
+
+---
+
+## Features
+
+| Feature | Description |
+|---|---|
+| **FNAF 3 Boot Sequence** | Authentic "NIGHT X" intro with flicker, scan lines, and static burst transition |
+| **CRT Monitor Effects** | Real-time Canvas-based static noise + CRT scan-line overlay |
+| **Surveillance HUD** | Camera frame corners, "CAM 07 — OFFICE" label, blinking REC indicator |
+| **Video Background** | Native `assets/menu-theme.webm` support with Qt6 Multimedia |
+| **Access Denied** | Red flicker animation on failed authentication |
+| **Fully Customizable** | Night number, colors, timings, and fonts via `theme.conf` |
+
+---
+
+## Repository Structure
 
 ```
-night-shift/
-├── Main.qml              # Ana ekran: açılış animasyonu + giriş formu
+fnaf3-sddm/
+├── Main.qml              # Main screen: boot animation + login form
 ├── components/
-│   ├── StaticNoise.qml    # TV parazit/statik efekti (Canvas)
-│   ├── ScanLines.qml      # CRT tarama çizgileri + vignette
-│   └── FlickerText.qml    # Titreşen (flicker) metin bileşeni
+│   ├── StaticNoise.qml    # TV static / noise effect (Canvas)
+│   ├── ScanLines.qml      # CRT scan lines + vignette
+│   └── FlickerText.qml    # Flickering text component
+├── assets/
+│   └── menu-theme.webm    # Background video (add your own)
 ├── fonts/
-│   ├── PressStart2P-Regular.ttf  # Açık kaynak (OFL) piksel font
-│   └── OFL.txt                    # Font lisansı
-├── theme.conf             # Renkler, gece numarası, süreler vs.
-├── metadata.desktop        # SDDM tema tanım dosyası (QtVersion=6)
-├── install.sh              # Otomatik kurulum scripti
+│   ├── PressStart2P-Regular.ttf  # Open source (OFL) pixel font
+│   └── OFL.txt                    # Font license
+├── theme.conf             # Colors, night number, timings, etc.
+├── metadata.desktop        # SDDM theme definition (QtVersion=6)
+├── install.sh              # Automated installation script
 └── README.md
 ```
 
-## Nasıl çalışıyor
+---
 
-1. **Açılış / splash animasyonu**: Ekran kararıyor, "NIGHT" yazısı büyüyerek
-   beliriyor, ardından gece numarası (`theme.conf` içinde `NightNumber`)
-   titreşerek (flicker) sahneye giriyor, kısa bir alt yazı ("SECURITY SHIFT
-   INITIATED") görünüyor, birkaç saniye bekleniyor, ardından kısa bir beyaz
-   "statik patlaması" ile sahne giriş ekranına geçiyor (FNAF serisindeki
-   gece başlama ekranlarının klasik akışı: karartı → "NIGHT" → numara →
-   bekleme → kesinti/geçiş).
-2. **Giriş ekranı**: Kamera çerçevesi köşe işaretleri, sol üstte "CAM 07 —
-   OFFICE" yazısı, sağ üstte yanıp sönen "REC" noktası, ortada kullanıcı/
-   şifre/oturum seçimli giriş paneli, sağ altta güç düğmeleri. Arka planda
-   sürekli hafif statik parazit ve tarama çizgileri devam ediyor.
-3. Yanlış şifre girilirse "ACCESS DENIED" yazısı kırmızı titreşerek
-   görünüyor.
-
-## Arka plan videosu ekleme
-
-1. Sahip olduğun video dosyasını temanın `media/` klasörüne **kendin**
-   kopyala ve `menu-theme.webm` olarak adlandır (veya `theme.conf` içindeki
-   `VideoSource` yolunu kendi dosya adına göre değiştir):
-   ```bash
-   cp ~/Downloads/senin-videon.webm night-shift/media/menu-theme.webm
-   ```
-2. Gerekli paketlerin kurulu olduğundan emin ol:
-   ```bash
-   sudo pacman -S qt6-multimedia qt6-multimedia-gstreamer
-   ```
-3. `theme.conf` içinde:
-   - `VideoSource=media/menu-theme.webm`
-   - `VideoMuted=false` / `VideoVolume=0.6` — videonun kendi içindeki sesi
-     çalar (ayrı bir mp3'e gerek yok, webm dosyasında ses varsa otomatik
-     gelir).
-4. Login paneli ekranın **sol yarısında, dikey ortada** duracak şekilde
-   konumlandırıldı — böylece video arka planının sağ tarafındaki karakter
-   görseli (varsa) panel tarafından kapatılmıyor.
-
-**Önemli — ses hakkında**: SDDM greeter, senin masaüstü oturumundan ayrı bir
-sistem oturumunda (genelde `sddm` kullanıcısıyla) çalışır. Bu yüzden bazı
-sistemlerde ses çıkışı (PipeWire/PulseAudio) greeter'a hiç ulaşmayabilir —
-test modunda dene, gerçek girişte sesin gelmemesi normal olabilir ve
-düzeltmesi SDDM/PipeWire sistem yapılandırmasına bağlı, temanın kendisiyle
-ilgili değil. Sorun yaşarsan `VideoMuted=true` yaparak en azından videoyu
-sessiz oynatabilirsin.
-
-
+## Dependencies
 
 ```bash
-sudo pacman -S sddm   # zaten kurulu değilse
-cd night-shift
+sudo pacman -S sddm qt6-declarative qt6-svg qt6-multimedia qt6-multimedia-gstreamer
+```
+
+---
+
+## Installation
+
+### Quick Install (Recommended)
+
+```bash
+git clone https://github.com/YOUR_USERNAME/fnaf3-sddm.git
+cd fnaf3-sddm
 sudo ./install.sh
 ```
 
-Script temayı `/usr/share/sddm/themes/night-shift` dizinine kopyalar ve
-`/etc/sddm.conf.d/10-theme.conf` içine `Current=night-shift` satırını yazar.
-
-### Manuel kurulum isterseniz
+### Manual Install
 
 ```bash
-sudo cp -r night-shift /usr/share/sddm/themes/
+git clone https://github.com/YOUR_USERNAME/fnaf3-sddm.git
+cd fnaf3-sddm
+sudo mkdir -p /usr/share/sddm/themes/fnaf3-sddm
+sudo cp -r ./* /usr/share/sddm/themes/fnaf3-sddm/
 sudo mkdir -p /etc/sddm.conf.d
-echo -e "[Theme]\nCurrent=night-shift" | sudo tee /etc/sddm.conf.d/10-theme.conf
+echo -e "[Theme]\nCurrent=fnaf3-sddm" | sudo tee /etc/sddm.conf.d/10-theme.conf
 ```
 
-## Test etme (oturum kapatmadan önizleme)
+---
+
+## Testing (Preview Without Logging Out)
 
 ```bash
-sddm-greeter-qt6 --test-mode --theme /usr/share/sddm/themes/night-shift
+sddm-greeter-qt6 --test-mode --theme /usr/share/sddm/themes/fnaf3-sddm
 ```
 
-Arch'ta `sddm` artık varsayılan olarak Qt6 derlemesini kullanıyor
-(`sddm-greeter-qt6`). Eğer sisteminizde hâlâ Qt5 greeter varsa, bu komutu
-`sddm-greeter` olarak deneyin ve `metadata.desktop` içindeki `QtVersion=6`
-satırını silin.
+> **Note:** On systems with Qt5 greeter, use `sddm-greeter` and remove `QtVersion=6` from `metadata.desktop`. Power buttons are inactive in test mode.
 
-Test modunda güç düğmeleri (kapat/yeniden başlat) ve gerçek giriş işlevsiz
-çalışır; bu normaldir.
+---
 
-## Özelleştirme (`theme.conf`)
+## Background Video
 
-| Anahtar | Açıklama |
+The theme expects a video file at `assets/menu-theme.webm`. Add your own:
+
+```bash
+cp ~/Downloads/your-video.webm fnaf3-sddm/assets/menu-theme.webm
+```
+
+Then ensure `theme.conf` contains:
+```ini
+VideoSource=assets/menu-theme.webm
+VideoMuted=false
+VideoVolume=0.6
+```
+
+> **Audio Notice:** SDDM runs in a separate session. PipeWire/PulseAudio may not route audio to the greeter. Set `VideoMuted=true` if you experience issues.
+
+---
+
+## Customization (`theme.conf`)
+
+| Key | Default | Description |
+|---|---|---|
+| `NightNumber` | `1` | Night number displayed during boot |
+| `AccentColor` | `#8b5cf6` | Primary HUD accent (purple) |
+| `DangerColor` | `#ff2a2a` | Error / access denied color |
+| `BackgroundColor` | `#000000` | Base background |
+| `ShowCameraFrame` | `true` | Toggle camera corner brackets |
+| `IntroDuration` | `6` | Boot animation duration (seconds) |
+| `FontFamily` | `Press Start 2P` | Primary pixel font |
+
+After editing, test immediately with `--test-mode`. No reboot required.
+
+---
+
+## Design Specifications
+
+### Color Palette
+- **Deep Black:** `#000000` — Background
+- **Surveillance Purple:** `#8b5cf6` — HUD accents
+- **Alert Red:** `#ff2a2a` — Warnings / access denied
+- **CRT Green:** `#50fa7b` — Verified states (optional)
+
+### Typography
+- **Press Start 2P** (included, OFL licensed) — Pixel font for boot sequence and HUD
+- Drop custom `.ttf` files into `fonts/` and update `FontFamily` in `theme.conf`
+
+---
+
+## Troubleshooting
+
+| Issue | Solution |
 |---|---|
-| `NightNumber` | Açılışta gösterilen gece sayısı |
-| `AccentColor` | Ana vurgu rengi (mor varsayılan) |
-| `DangerColor` | Hata/uyarı rengi |
-| `BackgroundColor` | Taban arka plan rengi |
-| `ShowCameraFrame` | Kamera çerçevesi köşelerini göster/gizle |
-| `IntroDuration` | Açılış animasyonunun toplam süresi (saniye) |
-| `FontFamily` | Tercih edilen yazı tipi adı |
+| Black screen / theme not loading | Check `journalctl -u sddm -b` for missing QML modules (`qt6-declarative`, `qt6-svg`) |
+| No audio from video | SDDM runs as `sddm` user — audio routing depends on PipeWire/PulseAudio config. Set `VideoMuted=true` |
+| `sddm` property errors | Compare `Main.qml` properties with other themes in `/usr/share/sddm/themes/*/Main.qml` |
 
-Değiştirdikten sonra tekrar `--test-mode` ile önizleyebilirsiniz; sistemi
-yeniden başlatmaya gerek yok.
+---
 
-## Gerçek görünümü FNAF 3'e daha da yaklaştırmak isterseniz
+## `install.sh`
 
-- `components/StaticNoise.qml` içindeki `noiseOpacity` değerini artırarak
-  paraziti güçlendirebilirsiniz.
-- Kendi telif hakkına sahip olduğunuz veya kullanım izniniz olan bir arka
-  plan görseli varsa, `Main.qml` içindeki arka plan `Rectangle`'ı bir
-  `Image { source: "background.png"; fillMode: Image.PreserveAspectCrop }`
-  ile değiştirip görseli tema klasörüne ekleyebilirsiniz. Ben telif hakkı
-  nedeniyle oyunun gerçek görsellerini buraya koyamadım.
+```bash
+#!/bin/bash
+set -e
 
-## Sorun giderme
+THEME_NAME="fnaf3-sddm"
+THEME_DIR="/usr/share/sddm/themes/${THEME_NAME}"
+CONFIG_DIR="/etc/sddm.conf.d"
 
-- Ekran siyah kalıyorsa veya tema yüklenmiyorsa: `journalctl -u sddm -b`
-  veya `--test-mode` çıktısındaki hata satırlarına bakın; genelde eksik bir
-  QML modülü (`qt6-declarative`, `qt6-svg` gibi) kurulu değildir.
-- `sddm` bağlam özellikleri (`sddm`, `userModel`, `sessionModel`) SDDM
-  sürümleri arasında küçük farklılıklar gösterebilir; `--test-mode`
-  çıktısında "is not a function" gibi bir hata görürseniz `Main.qml`
-  içindeki ilgili satırı (örn. `sddm.canSuspend`) sisteminizdeki diğer
-  temaların (`/usr/share/sddm/themes/*/Main.qml`) kullandığı isimle
-  karşılaştırıp düzeltebilirsiniz.
+echo "[*] FNAF3-SDDM Theme Installer"
+
+# Root check
+if [ "$EUID" -ne 0 ]; then
+    echo "[!] Run as root: sudo ./install.sh"
+    exit 1
+fi
+
+# Dependency check
+echo "[*] Checking SDDM..."
+if ! command -v sddm &>/dev/null; then
+    echo "[!] SDDM not found. Install with: sudo pacman -S sddm"
+    exit 1
+fi
+
+# Install theme
+echo "[*] Copying theme to ${THEME_DIR}..."
+mkdir -p "${THEME_DIR}"
+cp -r ./* "${THEME_DIR}/"
+
+# Permissions
+chmod 644 "${THEME_DIR}"/theme.conf 2>/dev/null || true
+chmod 644 "${THEME_DIR}"/metadata.desktop 2>/dev/null || true
+chmod -R 755 "${THEME_DIR}"/components 2>/dev/null || true
+chmod -R 755 "${THEME_DIR}"/assets 2>/dev/null || true
+
+# Configure SDDM
+echo "[*] Setting SDDM theme..."
+mkdir -p "${CONFIG_DIR}"
+cat > "${CONFIG_DIR}/10-theme.conf" <<EOF
+[Theme]
+Current=${THEME_NAME}
+EOF
+
+echo "[*] Done."
+echo "[*] Preview: sddm-greeter-qt6 --test-mode --theme ${THEME_DIR}"
+echo "[*] Reboot to activate at the login screen."
+```
+
+---
+
+## License
+
+- **Press Start 2P Font:** [SIL Open Font License 1.1](fonts/OFL.txt)
+- **Theme Code & Assets:** MIT License (see `LICENSE` file)
