@@ -197,4 +197,4 @@ echo "[*] Reboot to activate at the login screen."
 ## License
 
 - **Press Start 2P Font:** [SIL Open Font License 1.1](fonts/OFL.txt)
-- **Theme Code & Assets:** MIT License (see `LICENSE` file)
+- **Theme Code & Assets:** Bsd Clause 2 (see `LICENSE` file)
